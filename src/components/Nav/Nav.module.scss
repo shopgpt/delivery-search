@@ -1,0 +1,26 @@
+.Container {
+  position: fixed;
+  background: #fff;
+  box-shadow: 2px 2px 17px 3px #dadada69;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  & .NavContainer {
+    width: 1180px;
+    ul {
+      display: flex;
+      justify-content: space-between;
+
+      li {
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        height: 50px;
+        a {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

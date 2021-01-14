@@ -1,0 +1,10 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+
+  & .Content {
+    padding-top: 50px;
+    display: flex;
+    justify-content: center;
+  }
+}
