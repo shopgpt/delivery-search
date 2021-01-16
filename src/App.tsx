@@ -6,17 +6,22 @@ type State = {
   code: string;
   name: string;
   parcelNumber: string;
+  item: any;
 };
+
 export const INITIAL_STATE = {
   code: "",
   name: "",
   parcelNumber: "",
+  item: "",
 };
 
 type Action =
   | { type: "GET_CODE"; paylode: string }
   | { type: "GET_NAME"; paylode: string }
-  | { type: "GET_NUMBER"; paylode: string };
+  | { type: "GET_NUMBER"; paylode: string }
+  | { type: "RESET_STATE" }
+  | { type: "GET_STATUS"; paylode: any };
 
 export function reducer(state: State, action: Action) {
   switch (action.type) {
@@ -28,12 +33,24 @@ export function reducer(state: State, action: Action) {
     case "GET_NAME":
       return {
         ...state,
-        code: action.paylode,
+        name: action.paylode,
       };
     case "GET_NUMBER":
       return {
         ...state,
-        code: action.paylode,
+        parcelNumber: action.paylode,
+      };
+    case "GET_STATUS":
+      return {
+        ...state,
+        item: action.paylode,
+      };
+    case "RESET_STATE":
+      return {
+        ...state,
+        code: "",
+        name: "",
+        parcelNumber: "",
       };
     default:
       return state;
@@ -50,7 +67,7 @@ function App() {
   return (
     <StateContext.Provider value={state}>
       <ActionContext.Provider value={dispatch}>
-        <AppRouter />;
+        <AppRouter />
       </ActionContext.Provider>
     </StateContext.Provider>
   );

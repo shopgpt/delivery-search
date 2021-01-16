@@ -1,0 +1,45 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  .THeadContainer {
+    display: flex;
+    width: 100%;
+    background: #ededed;
+
+    .TItem {
+      padding: 10px 20px;
+      width: 33.3333%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .TBodyContainer {
+    display: flex;
+    flex-direction: column;
+    .TBodyItem {
+      display: flex;
+      h4 {
+        padding: 8px 0;
+        width: 33.333%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .TBodyItem:nth-child(2n) {
+      background: #f7f7f7;
+    }
+  }
+
+  .Less {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

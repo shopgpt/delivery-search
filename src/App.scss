@@ -16,4 +16,16 @@ button {
   border: none;
   outline: none;
   background: initial;
+  cursor: pointer;
+}
+
+input {
+  outline: none;
+}
+#root {
+  height: 100%;
+}
+
+body {
+  background: #f9f9f9;
 }

@@ -1,8 +1,8 @@
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { Company } from "../../api/interface";
-import { fetchCompany } from "../../api";
-
+import { fetchCompany, fetchTracking } from "../../api";
 import { StateContext, ActionContext } from "../../App";
+import { useHistory } from "react-router-dom";
 
 import styles from "./Main.module.scss";
 
@@ -10,22 +10,38 @@ export default function Main(): React.ReactElement {
   const state = useContext(StateContext);
   const dispatch = useContext(ActionContext);
   const [companys, setCompanys] = useState<Company[]>([]);
+  const [companyCode, setCompanyCode] = useState("");
+  const [parcelNumber, setParcelNumber] = useState("");
+  const history = useHistory();
 
+  // 택배사 코드 선택
+  const onChangeOption = (e: any) => {
+    const result = e.target.value;
+    setCompanyCode(result);
+    console.log(companyCode);
+  };
+
+  // 운송장번호 입력
   const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { value } = e.target;
     const result = value.toString();
-    dispatch({ type: "GET_NUMBER", paylode: result });
+    setParcelNumber(result);
   };
 
+  // 정보를 토대로 요청하는 함수
   const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+    if (companyCode === "택배사를 선택해주세요.")
+      return alert("택배사를 선택해 주세요.");
+    if (parcelNumber === "") return alert("운송장 번호를 입력해 주세요.");
+    if (companyCode !== "" && parcelNumber !== "") {
+      dispatch({ type: "GET_CODE", paylode: companyCode });
+      dispatch({ type: "GET_NUMBER", paylode: parcelNumber });
+      history.push("/detail");
+    }
   };
 
-  const onChangeOption = (e: any) => {
-    const result = e.target.value;
-    dispatch({ type: "GET_CODE", paylode: result });
-  };
-
+  // 택배사 코드 받아오는 API호출 함수
   const fetchCompanyData = async () => {
     try {
       const res = await fetchCompany();
@@ -35,9 +51,15 @@ export default function Main(): React.ReactElement {
     }
   };
 
+  // 렌더링시 택배사 코드 호출
   useEffect(() => {
     fetchCompanyData();
+    console.log(companyCode);
   }, []);
+
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
 
   return (
     <div className={styles.Container}>
@@ -50,8 +72,8 @@ export default function Main(): React.ReactElement {
             onSubmit(e);
           }}
         >
-          <select value={state.code} onChange={onChangeOption}>
-            <option>선택해주세요</option>
+          <select value={companyCode} onChange={onChangeOption}>
+            <option>택배사를 선택해주세요.</option>
             {companys.map((item) => {
               return (
                 <option key={item.Code} value={item.Code}>
@@ -60,6 +82,7 @@ export default function Main(): React.ReactElement {
               );
             })}
           </select>
+          <span></span>
           <input
             type="text"
             placeholder="운송장 번호를 입력해 주세요."

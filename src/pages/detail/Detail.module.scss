@@ -1,0 +1,44 @@
+.Container {
+  max-width: 1180px;
+  width: 1180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background: #fff;
+  box-shadow: 2px 2px 17px 3px #dadada69;
+  padding: 50px 30px;
+
+  .IntroCard {
+    padding: 50px 20px;
+    width: 100%;
+    .IntroCardItem {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      h3 {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .ItemContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 750px;
+    background: #333;
+  }
+
+  .TimeBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    p {
+      width: 250px;
+      background: #ff7272;
+      text-align: center;
+    }
+  }
+}

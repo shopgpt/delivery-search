@@ -11,6 +11,8 @@ export async function fetchTracking(
   code: string,
   invoice: string
 ): Promise<AxiosResponse<any>> {
-  const res = await axios.get(`${GET_TRACKING_INFO}?t_code={}?t_invoice={}`);
-  return res.data;
+  const res = await axios.get(
+    `${GET_TRACKING_INFO}&t_code=${code}&t_invoice=${invoice}`
+  );
+  return res;
 }

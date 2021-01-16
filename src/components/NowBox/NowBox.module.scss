@@ -1,0 +1,37 @@
+.Container {
+  width: 100%;
+  padding: 30px 100px;
+  .TextContainer {
+    // background: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .ItemContainer {
+      width: 100px;
+      height: 100px;
+      background: #ebebeb;
+      border-radius: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      svg {
+        fill: #666;
+      }
+      P {
+        font-weight: bold;
+        color: #666;
+      }
+    }
+    .ItemContainerActive {
+      background: #43c429;
+      svg {
+        fill: #000;
+      }
+      p {
+        color: #000;
+      }
+    }
+  }
+}

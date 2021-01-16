@@ -9,9 +9,7 @@ export default function Nav(): React.ReactElement {
       <nav className={styles.NavContainer}>
         <ul>
           <li>
-            <Link to="/">
-              <a>HOME</a>
-            </Link>
+            <Link to="/">HOME</Link>
           </li>
         </ul>
       </nav>
