@@ -9,6 +9,7 @@
 
   h1 {
     padding: 100px 0;
+    font-size: 50px;
   }
 
   & .FormContainer {
@@ -32,11 +33,9 @@
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
+      margin-right: 50px;
     }
 
-    span {
-      margin: 0 50px;
-    }
     form {
       display: flex;
       align-items: center;

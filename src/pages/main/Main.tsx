@@ -18,7 +18,6 @@ export default function Main(): React.ReactElement {
   const onChangeOption = (e: any) => {
     const result = e.target.value;
     setCompanyCode(result);
-    console.log(companyCode);
   };
 
   // 운송장번호 입력
@@ -54,17 +53,16 @@ export default function Main(): React.ReactElement {
   // 렌더링시 택배사 코드 호출
   useEffect(() => {
     fetchCompanyData();
-    console.log(companyCode);
   }, []);
 
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
+  useEffect(() => {}, [state]);
 
   return (
     <div className={styles.Container}>
       <div>
-        <h1>택 배 조 회</h1>
+        <h1>
+          <i>택 배 조 회 서 비 스</i>
+        </h1>
       </div>
       <div className={styles.FormContainer}>
         <form
@@ -82,7 +80,6 @@ export default function Main(): React.ReactElement {
               );
             })}
           </select>
-          <span></span>
           <input
             type="text"
             placeholder="운송장 번호를 입력해 주세요."

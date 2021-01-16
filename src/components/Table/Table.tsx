@@ -40,7 +40,7 @@ export default function Table({ thead, list }: BaseProps): React.ReactElement {
         })}
       </div>
       <div className={styles.TBodyContainer}>
-        {list.length >= 1 ? (
+        {list?.length >= 1 ? (
           list
             .map((item) => {
               return (

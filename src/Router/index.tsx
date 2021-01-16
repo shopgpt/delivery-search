@@ -11,7 +11,6 @@ export default function AppRouter() {
           <Route exact path="/" component={Main} />
           <Route exact path="/list" component={List} />
           <Route exact path="/detail" component={Detail} />
-          <Route exact path="/detail" component={Detail} />
         </Switch>
       </Layout>
     </Router>

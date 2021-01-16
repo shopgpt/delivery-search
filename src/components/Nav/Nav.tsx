@@ -11,6 +11,9 @@ export default function Nav(): React.ReactElement {
           <li>
             <Link to="/">HOME</Link>
           </li>
+          <li>
+            <Link to="/list">MYLIST</Link>
+          </li>
         </ul>
       </nav>
     </div>

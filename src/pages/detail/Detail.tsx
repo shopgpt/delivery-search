@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import { fetchTracking } from "../../api";
 import { StateContext, ActionContext } from "../../App";
 import { BackButton, Table, NowBox } from "../../components";
@@ -73,7 +73,6 @@ export default function Detail(): React.ReactElement {
     try {
       const res = await fetchTracking(state.code, state.parcelNumber);
       if (res) {
-        console.log("API 요청", res);
         dispatchs({ type: "GET_STATUS", paylode: res });
       }
     } catch (e) {
@@ -82,14 +81,10 @@ export default function Detail(): React.ReactElement {
   };
 
   useEffect(() => {
-    console.log(data);
-    console.log(state.item);
     fetchTrankingData();
-    // dispatch({ type: "GET_ITEM", paylode: state.item.data });
   }, []);
   useEffect(() => {
     if (!state.item) return;
-    console.log("oh start");
     // dispatch({ type: "GET_ITEM", paylode: data });
     // 원래 요청해야하는 주소
     dispatch({ type: "GET_ITEM", paylode: state.item.data });

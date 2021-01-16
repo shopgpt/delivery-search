@@ -14,15 +14,6 @@ interface BaseProps {
 }
 
 export default function NowBox({ stateNumber }: BaseProps): React.ReactElement {
-  // const level: string[] = [
-  //   "배송준비중",
-  //   "집화완료",
-  //   "배송중",
-  //   "지점 도착",
-  //   "배송출발",
-  //   "배송완료",
-  // ];
-  console.log(stateNumber);
   const list = [
     {
       id: 1,
@@ -60,7 +51,9 @@ export default function NowBox({ stateNumber }: BaseProps): React.ReactElement {
     <div className={styles.Container}>
       <div className={styles.TextContainer}>
         {list.map((item) => {
-          return <ItemTest item={item} stateNumber={stateNumber} />;
+          return (
+            <ItemCard key={item.id} item={item} stateNumber={stateNumber} />
+          );
         })}
       </div>
     </div>
@@ -77,7 +70,7 @@ interface Props {
   item: Item;
   stateNumber: number;
 }
-function ItemTest({ item, stateNumber }: Props): React.ReactElement {
+function ItemCard({ item, stateNumber }: Props): React.ReactElement {
   const test = "ItemContainerActive";
   const ItemClass = classNames(styles.ItemContainer, {
     [styles[test]]: item.id === stateNumber,
