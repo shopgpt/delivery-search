@@ -35,7 +35,10 @@ export default function Main(): React.ReactElement {
     if (parcelNumber === "") return alert("운송장 번호를 입력해 주세요.");
     if (companyCode !== "" && parcelNumber !== "") {
       dispatch({ type: "GET_CODE", paylode: companyCode });
-      dispatch({ type: "GET_NUMBER", paylode: parcelNumber });
+      dispatch({
+        type: "GET_NUMBER",
+        paylode: parcelNumber.replace(/-/g, "").trim(),
+      });
       history.push("/detail");
     }
   };
