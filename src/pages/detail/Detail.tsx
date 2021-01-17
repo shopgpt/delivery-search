@@ -106,14 +106,18 @@ export default function Detail(): React.ReactElement {
     localStorage.setItem("items", JSON.stringify(newArr));
   };
 
+  // 랜더링시 state에 있는 값으로 API요청
   useEffect(() => {
     console.log(state);
     fetchTrankingData();
   }, []);
+
+  //  API요청이 성공하면 state의 값이 변경되어 아래 useEffect 이벤트 실행
   useEffect(() => {
     if (!state.item) return;
     // dispatch({ type: "GET_ITEM", paylode: data });
     // 원래 요청해야하는 주소
+    // 현재 페이지에서 관리할 state값 저장
     dispatch({ type: "GET_ITEM", paylode: state.item.data });
   }, [state]);
 

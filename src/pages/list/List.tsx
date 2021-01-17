@@ -25,14 +25,16 @@ type ListType = {
 };
 
 interface State {
+  loading: boolean;
   list: ListType[];
 }
 
 const INITIAL_STATE = {
   list: [],
+  loading: false,
 };
 
-type Actions = { type: "GET_LIST"; paylode: any };
+type Actions = { type: "GET_LIST"; paylode: any } | { type: "LOADING" };
 
 function reducer(state: State, action: Actions) {
   switch (action.type) {
@@ -48,6 +50,11 @@ function reducer(state: State, action: Actions) {
             level: action.paylode.level,
           },
         ],
+      };
+    case "LOADING":
+      return {
+        ...state,
+        loading: true,
       };
     default:
       return state;
@@ -77,7 +84,9 @@ export default function List(): React.ReactElement {
     for (let item of list) {
       fetchTrankingData(item.code, item.parcelNumber);
     }
+    dispatch({ type: "LOADING" });
   }, []);
+  if (!state.loading) return <div>...로딩중</div>;
   return (
     <div>
       {state?.list?.map((item) => (
