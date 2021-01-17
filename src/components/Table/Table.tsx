@@ -44,7 +44,7 @@ export default function Table({ thead, list }: BaseProps): React.ReactElement {
           list
             .map((item) => {
               return (
-                <div className={styles.TBodyItem}>
+                <div key={item.time} className={styles.TBodyItem}>
                   <h4>{item.timeString}</h4>
                   <h4>{item.where}</h4>
                   <h4>{item.kind}</h4>

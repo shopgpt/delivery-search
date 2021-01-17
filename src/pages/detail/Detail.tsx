@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useReducer } from "react";
 import { fetchTracking } from "../../api";
 import { StateContext, ActionContext } from "../../App";
-import { BackButton, Table, NowBox } from "../../components";
+import { BackButton, Table, NowBox, Modal } from "../../components";
 import { data } from "./data";
 import styles from "./Detail.module.scss";
 
@@ -80,7 +80,34 @@ export default function Detail(): React.ReactElement {
     }
   };
 
+  const saveItem = (): void => {
+    if (state.parcelNumber === "") return alert("배송정보를 찾을 수 없습니다.");
+    const res = localStorage.getItem("items");
+    const result: { code: string; parcelNumber: string }[] = JSON.parse(
+      String(res)
+    );
+    const newItem = {
+      code: state.code,
+      parcelNumber: state.parcelNumber,
+    };
+    const condition: boolean = result?.some(
+      (item) => item.parcelNumber === newItem.parcelNumber
+    );
+    if (condition) {
+      alert("이미 등록된 배송정보 입니다.");
+      return;
+    }
+    if (res) {
+      const newArr = result.concat(newItem);
+      localStorage.setItem("items", JSON.stringify(newArr));
+      return;
+    }
+    const newArr = [newItem];
+    localStorage.setItem("items", JSON.stringify(newArr));
+  };
+
   useEffect(() => {
+    console.log(state);
     fetchTrankingData();
   }, []);
   useEffect(() => {
@@ -98,6 +125,10 @@ export default function Detail(): React.ReactElement {
         <NowBox stateNumber={item?.level} />
       </div>
       <Table thead={THead} list={item?.trackingDetails} />
+      <button onClick={saveItem}>내 배송리스트에 저장하기</button>
+      <div className={styles.ModalContainer}>
+        <Modal item={item} />
+      </div>
     </div>
   );
 }

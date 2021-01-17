@@ -11,9 +11,13 @@ import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn"; //ë°
 
 interface BaseProps {
   stateNumber: number;
+  onlyOne?: boolean;
 }
 
-export default function NowBox({ stateNumber }: BaseProps): React.ReactElement {
+export default function NowBox({
+  stateNumber,
+  onlyOne = false,
+}: BaseProps): React.ReactElement {
   const list = [
     {
       id: 1,
@@ -50,11 +54,20 @@ export default function NowBox({ stateNumber }: BaseProps): React.ReactElement {
   return (
     <div className={styles.Container}>
       <div className={styles.TextContainer}>
-        {list.map((item) => {
-          return (
-            <ItemCard key={item.id} item={item} stateNumber={stateNumber} />
-          );
-        })}
+        {!onlyOne ? (
+          list.map((item) => {
+            return (
+              <ItemCard
+                // onlyOne={onlyOne}
+                key={item.id}
+                item={item}
+                stateNumber={stateNumber}
+              />
+            );
+          })
+        ) : (
+          <ItemCard item={list[stateNumber - 1]} stateNumber={stateNumber} />
+        )}
       </div>
     </div>
   );

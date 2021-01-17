@@ -1,6 +1,6 @@
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { Company } from "../../api/interface";
-import { fetchCompany, fetchTracking } from "../../api";
+import { fetchCompany } from "../../api";
 import { StateContext, ActionContext } from "../../App";
 import { useHistory } from "react-router-dom";
 
@@ -30,8 +30,7 @@ export default function Main(): React.ReactElement {
   // 정보를 토대로 요청하는 함수
   const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    if (companyCode === "택배사를 선택해주세요.")
-      return alert("택배사를 선택해 주세요.");
+    if (companyCode === "") return alert("택배사를 선택해 주세요.");
     if (parcelNumber === "") return alert("운송장 번호를 입력해 주세요.");
     if (companyCode !== "" && parcelNumber !== "") {
       dispatch({ type: "GET_CODE", paylode: companyCode });
@@ -74,7 +73,7 @@ export default function Main(): React.ReactElement {
           }}
         >
           <select value={companyCode} onChange={onChangeOption}>
-            <option>택배사를 선택해주세요.</option>
+            <option value="">택배사를 선택해주세요.</option>
             {companys.map((item) => {
               return (
                 <option key={item.Code} value={item.Code}>
