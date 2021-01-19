@@ -1,8 +1,11 @@
 // BASE_URL
-export const BASE_RUL = "http://info.sweettracker.co.kr";
+export const BASE_RUL = "https://info.sweettracker.co.kr";
 
 // API_KEY
-export const API_KEY = process.env.REACT_APP_API_KEY;
+export const API_KEY = "cylwTggXB31CmL4N9WRT6A";
+
+// API_KEY
+// export const API_KEY = process.env.REACT_APP_API_KEY;
 
 // 택배사 조회
 export const GET_COMPANY = `${BASE_RUL}/api/v1/companylist?t_key=${API_KEY}`;
