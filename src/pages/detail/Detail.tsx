@@ -98,7 +98,8 @@ export default function Detail(): React.ReactElement {
     }
   };
 
-  const saveItem = (): void => {
+  const saveItem = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
     if (state.parcelNumber === "") return alert("배송정보를 찾을 수 없습니다.");
     const res = localStorage.getItem("items");
     const result: State[] = JSON.parse(String(res));
@@ -153,7 +154,14 @@ export default function Detail(): React.ReactElement {
       </div>
       <Table list={item.trackingDetails} />
       <div className={styles.BtnContainer}>
-        <form className={classes.root} noValidate autoComplete="off">
+        <form
+          className={classes.root}
+          noValidate
+          onSubmit={(e) => {
+            saveItem(e);
+          }}
+          autoComplete="off"
+        >
           <TextField
             id="outlined-basic"
             label="상품명을 작성해 주세요"
@@ -163,7 +171,7 @@ export default function Detail(): React.ReactElement {
               setName(e.target.value);
             }}
           />
-          <Button onClick={saveItem} variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="primary">
             리스트에 저장하기
           </Button>
         </form>
