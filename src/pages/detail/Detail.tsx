@@ -7,6 +7,7 @@ import { BackButton, Table, NowBox } from "../../components";
 import { data } from "./data";
 import styles from "./Detail.module.scss";
 import { Button } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 export type Tracking = {
   code: boolean;
@@ -82,7 +83,7 @@ export default function Detail(): React.ReactElement {
   const dispatchs = useContext(ActionContext);
   const [item, dispatch] = useReducer(reducer, INITIAL_STATE);
   const [name, setName] = useState("");
-
+  const history = useHistory();
   const classes = useStyles();
 
   const fetchTrankingData = async () => {
@@ -120,12 +121,12 @@ export default function Detail(): React.ReactElement {
     if (res) {
       const newArr = result.concat(newItem);
       localStorage.setItem("items", JSON.stringify(newArr));
-      alert("배송정보가 리스트에 저장 되었습니다.");
+      history.push("/list");
       return;
     }
     const newArr = [newItem];
     localStorage.setItem("items", JSON.stringify(newArr));
-    alert("배송정보가 리스트에 저장 되었습니다.");
+    history.push("/list");
   };
 
   // 랜더링시 state에 있는 값으로 API요청

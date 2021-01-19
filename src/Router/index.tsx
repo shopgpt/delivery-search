@@ -5,7 +5,7 @@ import { Layout } from "../components";
 
 export default function AppRouter() {
   return (
-    <Router>
+    <Router basename="/parcel-search">
       <Layout>
         <Switch>
           <Route exact path="/" component={Main} />

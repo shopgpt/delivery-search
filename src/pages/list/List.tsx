@@ -75,11 +75,12 @@ export default function List(): React.ReactElement {
     console.log(state);
   }, [state]);
 
-  // if (!state.loading) return <div>...로딩중</div>;
+  if (state.list.length <= 0)
+    return <div className={styles.Container}>저장된 배송정보가 없습니다.</div>;
   return (
     <ListContext.Provider value={state}>
       <ListActionContext.Provider value={dispatch}>
-        <div className={styles.Container}>
+        <div>
           {state.list.map((item) => {
             return <Card key={parseInt(item.parcelNumber)} item={item} />;
           })}
