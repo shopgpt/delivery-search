@@ -23,11 +23,20 @@ type THEAD = {
 };
 
 interface BaseProps {
-  thead: THEAD[];
+  thead?: THEAD[];
   list: LIST[];
 }
 
-export default function Table({ thead, list }: BaseProps): React.ReactElement {
+const THead = [
+  { name: "배송시간" },
+  { name: "현재위치" },
+  { name: "배송상태" },
+];
+
+export default function Table({
+  thead = THead,
+  list,
+}: BaseProps): React.ReactElement {
   return (
     <div className={styles.Container}>
       <div className={styles.THeadContainer}>

@@ -22,11 +22,24 @@
     }
   }
 
-  .ModalContainer {
-    padding: 30px;
+  .BtnContainer {
+    padding: 30px 0;
     display: flex;
     width: 100%;
     justify-content: flex-end;
+    height: 56px;
+    button {
+      padding: 10px 15px;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      background: #061d84;
+      transition: all 0.2s;
+      &:hover {
+        background: #0125c7;
+      }
+    }
   }
 
   .ItemContainer {

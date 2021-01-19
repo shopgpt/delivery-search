@@ -1,7 +1,9 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer, Dispatch, createContext } from "react";
 import { fetchTracking } from "../../api";
 import { ActionContext } from "../../App";
 import { Card } from "../../components";
+
+import styles from "./List.module.scss";
 
 type Tracking = {
   code: boolean;
@@ -18,6 +20,8 @@ type Tracking = {
 };
 
 type ListType = {
+  code: string;
+  parcelNumber: string;
   complete: string;
   itemName: string;
   trackingDetails: Tracking[];
@@ -29,27 +33,24 @@ interface State {
   list: ListType[];
 }
 
-const INITIAL_STATE = {
+const INITIAL_STATE: State = {
   list: [],
   loading: false,
 };
 
-type Actions = { type: "GET_LIST"; paylode: any } | { type: "LOADING" };
+type Actions = { type: "GET_LIST"; paylode: ListType[] } | { type: "LOADING" };
+
+type ActionDispatchs = Dispatch<Actions>;
+
+export const ListContext = createContext<State>(INITIAL_STATE);
+export const ListActionContext = createContext<ActionDispatchs>(() => null);
 
 function reducer(state: State, action: Actions) {
   switch (action.type) {
     case "GET_LIST":
       return {
         ...state,
-        list: [
-          ...state.list,
-          {
-            complete: action.paylode.complete,
-            itemName: action.paylode.itemName,
-            trackingDetails: action.paylode.trackingDetails,
-            level: action.paylode.level,
-          },
-        ],
+        list: action.paylode,
       };
     case "LOADING":
       return {
@@ -64,34 +65,38 @@ function reducer(state: State, action: Actions) {
 export default function List(): React.ReactElement {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
-  const fetchTrankingData = async (code: string, parcelNumber: string) => {
-    try {
-      const res = await fetchTracking(code, parcelNumber);
-      console.log(res);
-      if (res) {
-        dispatch({ type: "GET_LIST", paylode: res.data });
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   useEffect(() => {
     const res = localStorage.getItem("items");
-    const list: { code: string; parcelNumber: string }[] = JSON.parse(
-      String(res)
-    );
-    for (let item of list) {
-      fetchTrankingData(item.code, item.parcelNumber);
-    }
-    dispatch({ type: "LOADING" });
+    const list: ListType[] = JSON.parse(String(res));
+    dispatch({ type: "GET_LIST", paylode: list });
   }, []);
-  if (!state.loading) return <div>...로딩중</div>;
+
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
+
+  // if (!state.loading) return <div>...로딩중</div>;
   return (
-    <div>
-      {state?.list?.map((item) => (
-        <Card item={item} />
-      ))}
-    </div>
+    <ListContext.Provider value={state}>
+      <ListActionContext.Provider value={dispatch}>
+        <div className={styles.Container}>
+          {state.list.map((item) => {
+            return <Card key={parseInt(item.parcelNumber)} item={item} />;
+          })}
+        </div>
+      </ListActionContext.Provider>
+    </ListContext.Provider>
   );
 }
+
+// const fetchTrankingData = async (code: string, parcelNumber: string) => {
+//   try {
+//     const res = await fetchTracking(code, parcelNumber);
+//     console.log(res);
+//     if (res) {
+//       dispatch({ type: "GET_LIST", paylode: res.data });
+//     }
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };

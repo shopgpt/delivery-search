@@ -1,11 +1,14 @@
-import React, { useContext, useEffect, useReducer } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
 import { fetchTracking } from "../../api";
 import { StateContext, ActionContext } from "../../App";
-import { BackButton, Table, NowBox, Modal } from "../../components";
+import { BackButton, Table, NowBox } from "../../components";
 import { data } from "./data";
 import styles from "./Detail.module.scss";
+import { Button } from "@material-ui/core";
 
-type Tracking = {
+export type Tracking = {
   code: boolean;
   kind: string;
   level: number;
@@ -19,19 +22,24 @@ type Tracking = {
   where: string;
 };
 
-type State = {
+export type State = {
   loading: boolean;
   complete: string;
   itemName: string;
   trackingDetails: Tracking[];
   level: number;
+  parcelNumber: string;
+  code: string;
 };
+
 const INITIAL_STATE: State = {
   loading: false,
   complete: "",
   itemName: "",
   trackingDetails: [],
   level: 0,
+  parcelNumber: "",
+  code: "",
 };
 
 type Actions = { type: "GET_ITEM"; paylode: any } | { type: "LOADING_START" };
@@ -45,6 +53,8 @@ function reducer(state: State, action: Actions): State {
         itemName: action.paylode.itemName,
         trackingDetails: action.paylode.trackingDetails,
         level: action.paylode.level,
+        parcelNumber: action.paylode.parcelNumber,
+        code: action.paylode.code,
       };
     case "LOADING_START":
       return {
@@ -56,17 +66,24 @@ function reducer(state: State, action: Actions): State {
   }
 }
 
-const THead = [
-  { name: "배송시간" },
-  { name: "현재위치" },
-  { name: "배송상태" },
-];
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      "& > *": {
+        margin: theme.spacing(1),
+        width: "25ch",
+      },
+    },
+  })
+);
 
 export default function Detail(): React.ReactElement {
   const state = useContext(StateContext);
   const dispatchs = useContext(ActionContext);
-
   const [item, dispatch] = useReducer(reducer, INITIAL_STATE);
+  const [name, setName] = useState("");
+
+  const classes = useStyles();
 
   const fetchTrankingData = async () => {
     dispatch({ type: "LOADING_START" });
@@ -83,15 +100,18 @@ export default function Detail(): React.ReactElement {
   const saveItem = (): void => {
     if (state.parcelNumber === "") return alert("배송정보를 찾을 수 없습니다.");
     const res = localStorage.getItem("items");
-    const result: { code: string; parcelNumber: string }[] = JSON.parse(
-      String(res)
-    );
-    const newItem = {
-      code: state.code,
+    const result: State[] = JSON.parse(String(res));
+    const newItem: State = {
+      loading: item.loading,
+      complete: item.complete,
+      itemName: name,
+      trackingDetails: item.trackingDetails,
+      level: item.level,
       parcelNumber: state.parcelNumber,
+      code: state.code,
     };
     const condition: boolean = result?.some(
-      (item) => item.parcelNumber === newItem.parcelNumber
+      (item) => item?.parcelNumber === newItem.parcelNumber
     );
     if (condition) {
       alert("이미 등록된 배송정보 입니다.");
@@ -100,10 +120,12 @@ export default function Detail(): React.ReactElement {
     if (res) {
       const newArr = result.concat(newItem);
       localStorage.setItem("items", JSON.stringify(newArr));
+      alert("배송정보가 리스트에 저장 되었습니다.");
       return;
     }
     const newArr = [newItem];
     localStorage.setItem("items", JSON.stringify(newArr));
+    alert("배송정보가 리스트에 저장 되었습니다.");
   };
 
   // 랜더링시 state에 있는 값으로 API요청
@@ -128,10 +150,22 @@ export default function Detail(): React.ReactElement {
       <div className={styles.IntroCard}>
         <NowBox stateNumber={item?.level} />
       </div>
-      <Table thead={THead} list={item?.trackingDetails} />
-      <button onClick={saveItem}>내 배송리스트에 저장하기</button>
-      <div className={styles.ModalContainer}>
-        <Modal item={item} />
+      <Table list={item.trackingDetails} />
+      <div className={styles.BtnContainer}>
+        <form className={classes.root} noValidate autoComplete="off">
+          <TextField
+            id="outlined-basic"
+            label="상품명을 작성해 주세요"
+            variant="outlined"
+            autoFocus
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+          />
+          <Button onClick={saveItem} variant="contained" color="primary">
+            리스트에 저장하기
+          </Button>
+        </form>
       </div>
     </div>
   );
