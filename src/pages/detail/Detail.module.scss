@@ -1,16 +1,17 @@
 .Container {
-  max-width: 1180px;
-  width: 1180px;
+  width: 99vw;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   background: #fff;
   box-shadow: 2px 2px 17px 3px #dadada69;
-  padding: 50px 30px;
+  padding: 1rem 1rem;
+  font-size: 14px;
 
   .IntroCard {
-    padding: 50px 20px;
+    padding: 2rem 0 ;
     width: 100%;
     .IntroCardItem {
       display: flex;
@@ -32,7 +33,7 @@
       padding: 10px 15px;
       border-radius: 5px;
       color: #fff;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: bold;
       background: #061d84;
       transition: all 0.2s;

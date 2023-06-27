@@ -1,9 +1,10 @@
 .Container {
   display: flex;
   align-items: center;
+
   button {
     width: 50px;
-    margin-right: 20px;
+    padding: 0;
     display: flex;
     justify-content: flex-start;
     align-items: center;

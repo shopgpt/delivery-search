@@ -3,6 +3,7 @@ import { title } from "process";
 import React from "react";
 
 import styles from "./Table.module.scss";
+import { dateToFullString } from "../../util/date";
 
 type LIST = {
   code?: boolean;
@@ -54,9 +55,12 @@ export default function Table({
             .map((item) => {
               return (
                 <div key={item.time} className={styles.TBodyItem}>
-                  <h4>{item.timeString}</h4>
-                  <h4>{item.where}</h4>
-                  <h4>{item.kind}</h4>
+                  <span>
+                    {item.timeString &&
+                      dateToFullString(new Date(item.timeString))}
+                  </span>
+                  <span>{item.where}</span>
+                  <span>{item.kind}</span>
                 </div>
               );
             })

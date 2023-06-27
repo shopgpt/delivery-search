@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   width: 100%;
+
   .THeadContainer {
     display: flex;
     width: 100%;
@@ -22,7 +23,7 @@
     flex-direction: column;
     .TBodyItem {
       display: flex;
-      h4 {
+      span {
         padding: 8px 0;
         width: 33.333%;
         display: flex;

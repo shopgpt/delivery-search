@@ -66,9 +66,7 @@ export default function Main(): React.ReactElement {
   return (
     <div className={styles.Container}>
       <div>
-        <h1>
-          <i>택 배 조 회 서 비 스</i>
-        </h1>
+        <h1>택배조회 서비스</h1>
       </div>
       <div className={styles.FormContainer}>
         <form

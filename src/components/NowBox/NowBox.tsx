@@ -22,7 +22,7 @@ export default function NowBox({
     {
       id: 1,
       icon: <AlarmOnIcon />,
-      state: "배송준비중",
+      state: "준비중",
     },
     {
       id: 2,
