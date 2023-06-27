@@ -1,5 +1,6 @@
 // BASE_URL
-export const BASE_URL = "http://127.0.0.1:7000";
+// export const BASE_URL = "http://127.0.0.1:7000";
+export const BASE_URL = "http://15.164.161.86:7000";
 
 // 택배사 조회
 // export const GET_COMPANY = `/api/${BASE_URL}/companylist`;
