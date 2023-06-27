@@ -1,6 +1,6 @@
-import React, { createContext, Dispatch, useReducer } from "react";
-import AppRouter from "./Router";
+import { createContext, Dispatch, useReducer } from "react";
 import "./App.scss";
+import AppRouter from "./Router";
 
 type State = {
   code: string;
@@ -17,33 +17,33 @@ export const INITIAL_STATE = {
 };
 
 type Action =
-  | { type: "GET_CODE"; paylode: string }
-  | { type: "GET_NAME"; paylode: string }
-  | { type: "GET_NUMBER"; paylode: string }
+  | { type: "GET_CODE"; payload: string }
+  | { type: "GET_NAME"; payload: string }
+  | { type: "GET_NUMBER"; payload: string }
   | { type: "RESET_STATE" }
-  | { type: "GET_STATUS"; paylode: any };
+  | { type: "GET_STATUS"; payload: any };
 
 export function reducer(state: State, action: Action) {
   switch (action.type) {
     case "GET_CODE":
       return {
         ...state,
-        code: action.paylode,
+        code: action.payload,
       };
     case "GET_NAME":
       return {
         ...state,
-        name: action.paylode,
+        name: action.payload,
       };
     case "GET_NUMBER":
       return {
         ...state,
-        parcelNumber: action.paylode,
+        parcelNumber: action.payload,
       };
     case "GET_STATUS":
       return {
         ...state,
-        item: action.paylode,
+        item: action.payload,
       };
     case "RESET_STATE":
       return {

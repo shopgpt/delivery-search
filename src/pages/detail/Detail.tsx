@@ -1,13 +1,10 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import React, { useCallback, useContext, useEffect, useReducer } from "react";
+import { ActionContext, StateContext } from "../../App";
 import { fetchTracking } from "../../api";
-import { StateContext, ActionContext } from "../../App";
-import { BackButton, Table, NowBox } from "../../components";
-import { data } from "./data";
+import { BackButton, NowBox, Table } from "../../components";
+import { useSearchQuery } from "../../util/useSearchQuery";
 import styles from "./Detail.module.scss";
-import { Button } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
 
 export type Tracking = {
   code: boolean;
@@ -33,6 +30,11 @@ export type State = {
   code: string;
 };
 
+export type Param = {
+  company: string;
+  id: string;
+};
+
 const INITIAL_STATE: State = {
   loading: false,
   complete: "",
@@ -43,19 +45,19 @@ const INITIAL_STATE: State = {
   code: "",
 };
 
-type Actions = { type: "GET_ITEM"; paylode: any } | { type: "LOADING_START" };
+type Actions = { type: "GET_ITEM"; payload: any } | { type: "LOADING_START" };
 
 function reducer(state: State, action: Actions): State {
   switch (action.type) {
     case "GET_ITEM":
       return {
         loading: false,
-        complete: action.paylode.complete,
-        itemName: action.paylode.itemName,
-        trackingDetails: action.paylode.trackingDetails,
-        level: action.paylode.level,
-        parcelNumber: action.paylode.parcelNumber,
-        code: action.paylode.code,
+        complete: action.payload.complete,
+        itemName: action.payload.itemName,
+        trackingDetails: action.payload.trackingDetails,
+        level: action.payload.level,
+        parcelNumber: action.payload.parcelNumber,
+        code: action.payload.code,
       };
     case "LOADING_START":
       return {
@@ -82,67 +84,31 @@ export default function Detail(): React.ReactElement {
   const state = useContext(StateContext);
   const dispatchs = useContext(ActionContext);
   const [item, dispatch] = useReducer(reducer, INITIAL_STATE);
-  const [name, setName] = useState("");
-  const history = useHistory();
-  const classes = useStyles();
+  const query = useSearchQuery();
+  const company = query.get("company") || "";
+  const id = query.get("id") || "";
 
-  const fetchTrankingData = async () => {
+  const fetchTrackingData = useCallback(async () => {
     dispatch({ type: "LOADING_START" });
     try {
-      const res = await fetchTracking(state.code, state.parcelNumber);
+      const res = await fetchTracking(company, id);
       if (res) {
-        dispatchs({ type: "GET_STATUS", paylode: res });
+        dispatchs({ type: "GET_STATUS", payload: res });
       }
     } catch (e) {
       console.log(e);
     }
-  };
-
-  const saveItem = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    if (state.parcelNumber === "") return alert("배송정보를 찾을 수 없습니다.");
-    const res = localStorage.getItem("items");
-    const result: State[] = JSON.parse(String(res));
-    const newItem: State = {
-      loading: item.loading,
-      complete: item.complete,
-      itemName: name,
-      trackingDetails: item.trackingDetails,
-      level: item.level,
-      parcelNumber: state.parcelNumber,
-      code: state.code,
-    };
-    const condition: boolean = result?.some(
-      (item) => item?.parcelNumber === newItem.parcelNumber
-    );
-    if (condition) {
-      alert("이미 등록된 배송정보 입니다.");
-      return;
-    }
-    if (res) {
-      const newArr = result.concat(newItem);
-      localStorage.setItem("items", JSON.stringify(newArr));
-      history.push("/list");
-      return;
-    }
-    const newArr = [newItem];
-    localStorage.setItem("items", JSON.stringify(newArr));
-    history.push("/list");
-  };
+  }, [dispatchs, company, id]);
 
   // 랜더링시 state에 있는 값으로 API요청
   useEffect(() => {
-    console.log(state);
-    fetchTrankingData();
-  }, []);
+    fetchTrackingData();
+  }, [fetchTrackingData]);
 
   //  API요청이 성공하면 state의 값이 변경되어 아래 useEffect 이벤트 실행
   useEffect(() => {
     if (!state.item) return;
-    // dispatch({ type: "GET_ITEM", paylode: data });
-    // 원래 요청해야하는 주소
-    // 현재 페이지에서 관리할 state값 저장
-    dispatch({ type: "GET_ITEM", paylode: state.item.data });
+    dispatch({ type: "GET_ITEM", payload: state.item.data });
   }, [state]);
 
   if (item.loading) return <div>...로딩중</div>;
@@ -153,29 +119,6 @@ export default function Detail(): React.ReactElement {
         <NowBox stateNumber={item?.level} />
       </div>
       <Table list={item.trackingDetails} />
-      <div className={styles.BtnContainer}>
-        <form
-          className={classes.root}
-          noValidate
-          onSubmit={(e) => {
-            saveItem(e);
-          }}
-          autoComplete="off"
-        >
-          <TextField
-            id="outlined-basic"
-            label="상품명을 작성해 주세요"
-            variant="outlined"
-            autoFocus
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-          />
-          <Button type="submit" variant="contained" color="primary">
-            리스트에 저장하기
-          </Button>
-        </form>
-      </div>
     </div>
   );
 }

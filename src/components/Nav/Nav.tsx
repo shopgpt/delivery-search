@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import styles from "./Nav.module.scss";
 
 export default function Nav(): React.ReactElement {
@@ -10,9 +9,6 @@ export default function Nav(): React.ReactElement {
         <ul>
           <li>
             <Link to="/">HOME</Link>
-          </li>
-          <li>
-            <Link to="/list">MYLIST</Link>
           </li>
         </ul>
       </nav>

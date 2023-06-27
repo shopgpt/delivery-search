@@ -33,12 +33,12 @@ export default function Main(): React.ReactElement {
     if (companyCode === "") return alert("택배사를 선택해 주세요.");
     if (parcelNumber === "") return alert("운송장 번호를 입력해 주세요.");
     if (companyCode !== "" && parcelNumber !== "") {
-      dispatch({ type: "GET_CODE", paylode: companyCode });
+      dispatch({ type: "GET_CODE", payload: companyCode });
       dispatch({
         type: "GET_NUMBER",
-        paylode: parcelNumber.replace(/-/g, "").trim(),
+        payload: parcelNumber.replace(/-/g, "").trim(),
       });
-      history.push("/detail");
+      history.push(`/detail?company=${companyCode}&id=${parcelNumber}`);
     }
   };
 
@@ -58,6 +58,10 @@ export default function Main(): React.ReactElement {
   }, []);
 
   useEffect(() => {}, [state]);
+
+  if (!companys) {
+    return <>"Loadding...";</>;
+  }
 
   return (
     <div className={styles.Container}>
